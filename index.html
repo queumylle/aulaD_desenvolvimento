@@ -1,0 +1,1173 @@
+AulaDD
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prof. Celso Barreto | Desenvolvimento Dinâmico</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                            accent: '#06b6d4',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glow-effect {
+            position: relative;
+        }
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #6366f1, #06b6d4, #a855f7);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .glow-effect:hover::before {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col justify-between">
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 max-w-sm pointer-events-none"></div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center font-mono font-bold text-white text-lg shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                    &lt;/&gt;
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-heading font-bold text-lg leading-tight tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+                        Prof. Celso Barreto
+                    </span>
+                    <span class="text-xs text-indigo-400 font-mono tracking-wider">DEV. DINÂMICO</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+                <a href="#apresentacao" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-all">Apresentação</a>
+                <a href="#ementa" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-all">Módulos & Ementa</a>
+                <a href="#playground" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-all flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Playground JS
+                </a>
+                <a href="#exercicios" class="px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-lg transition-all">Projetos & Recursos</a>
+                <a href="#contato" class="ml-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-md shadow-indigo-600/30 transition-all hover:shadow-indigo-500/50">
+                    <i class="fa-regular fa-paper-plane mr-1.5"></i> Contato
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" aria-label="Abrir Menu" class="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900/95 border-b border-slate-800 px-4 pt-2 pb-6 space-y-2">
+            <a href="#apresentacao" class="mobile-link block px-3 py-2.5 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">Apresentação</a>
+            <a href="#ementa" class="mobile-link block px-3 py-2.5 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">Módulos & Ementa</a>
+            <a href="#playground" class="mobile-link block px-3 py-2.5 rounded-md text-base font-medium text-cyan-400 hover:bg-slate-800">Playground JS</a>
+            <a href="#exercicios" class="mobile-link block px-3 py-2.5 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800">Projetos & Recursos</a>
+            <a href="#contato" class="mobile-link block px-3 py-2.5 rounded-md text-base font-semibold text-white bg-indigo-600 hover:bg-indigo-500 text-center mt-3">Contato & Dúvidas</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
+            <!-- Background Gradients -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
+            <div class="absolute top-1/3 right-10 w-[350px] h-[350px] bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                    
+                    <!-- Left Hero Content -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700/50 text-indigo-300 text-xs sm:text-sm font-mono tracking-wide">
+                            <span class="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+                            <span>Disciplina Acadêmica &amp; Prática de TI</span>
+                        </div>
+
+                        <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-none">
+                            Desenvolvimento <br class="hidden sm:inline"/>
+                            <span class="bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-300 bg-clip-text text-transparent">
+                                Dinâmico Web
+                            </span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                            Construa aplicações web reativas, orientadas a eventos e conectadas a APIs modernas. Domine a essência do JavaScript ES6+, manipulação avançada de DOM, requisições assíncronas e arquitetura client-side sob a orientação do <strong class="text-white font-medium">Prof. Celso Barreto</strong>.
+                        </p>
+
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <a href="#ementa" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold text-base shadow-xl shadow-indigo-600/25 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2 group">
+                                <span>Explorar Ementa</span>
+                                <i class="fa-solid fa-arrow-down text-sm group-hover:translate-y-1 transition-transform"></i>
+                            </a>
+                            <a href="#playground" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-semibold text-base transition-all flex items-center justify-center gap-2 hover:border-cyan-500/50">
+                                <i class="fa-solid fa-code text-cyan-400"></i>
+                                <span>Code Playground</span>
+                            </a>
+                        </div>
+
+                        <!-- Highlights stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-8 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+                            <div>
+                                <span class="block font-heading font-bold text-2xl sm:text-3xl text-white">100%</span>
+                                <span class="text-xs sm:text-sm text-slate-400">Prático &amp; Mão na Massa</span>
+                            </div>
+                            <div>
+                                <span class="block font-heading font-bold text-2xl sm:text-3xl text-indigo-400">6</span>
+                                <span class="text-xs sm:text-sm text-slate-400">Módulos Estruturados</span>
+                            </div>
+                            <div>
+                                <span class="block font-heading font-bold text-2xl sm:text-3xl text-cyan-400">ES6+</span>
+                                <span class="text-xs sm:text-sm text-slate-400">Padrões de Mercado</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Hero Visual / Avatar Card -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-md">
+                            <!-- Card Backdrop Glow -->
+                            <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-3xl blur-lg opacity-40 animate-pulse-slow"></div>
+
+                            <!-- Avatar Card Frame -->
+                            <div class="relative glass-panel rounded-3xl p-6 sm:p-8 space-y-6 border border-slate-700/60 shadow-2xl">
+                                
+                                <div class="flex items-center gap-4">
+                                    <!-- Avatar Container -->
+                                    <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-cyan-500 p-0.5 shadow-lg flex-shrink-0">
+                                        <div class="w-full h-full bg-slate-900 rounded-[14px] overflow-hidden flex items-center justify-center relative group">
+                                            <svg class="w-16 h-16 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                            </svg>
+                                            <div class="absolute bottom-1 right-1 bg-emerald-500 w-3.5 h-3.5 rounded-full border-2 border-slate-900" title="Professor Online"></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h2 class="font-heading font-bold text-xl text-white">Prof. Celso Barreto</h2>
+                                        <p class="text-xs font-mono text-indigo-400">Mestre &amp; Dev Full-Stack</p>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">JavaScript</span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">Node.js</span>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">IA &amp; Web</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Code Snippet Box -->
+                                <div class="bg-slate-950/80 rounded-xl p-4 font-mono text-xs text-slate-300 border border-slate-800 space-y-1.5 shadow-inner">
+                                    <div class="flex items-center justify-between text-slate-500 pb-1 border-b border-slate-800 text-[10px]">
+                                        <span>aula-dinamica.js</span>
+                                        <span class="text-emerald-400">● Live Code</span>
+                                    </div>
+                                    <p class="text-indigo-400"><span class="text-purple-400">const</span> professor = <span class="text-amber-300 font-semibold">{</span></p>
+                                    <p class="pl-4">nome: <span class="text-emerald-300">'Celso Barreto'</span>,</p>
+                                    <p class="pl-4">disciplina: <span class="text-emerald-300">'Desenvolvimento Dinâmico'</span>,</p>
+                                    <p class="pl-4">foco: <span class="text-emerald-300">'Front-end, APIs &amp; Reatividade'</span>,</p>
+                                    <p class="pl-4">aprender: () => <span class="text-cyan-300">console</span>.log(<span class="text-emerald-300">'Mão na massa!'</span>)</p>
+                                    <p class="text-amber-300"><span class="text-indigo-400">}</span>;</p>
+                                    <p class="pt-1 text-slate-400">professor.aprender();</p>
+                                </div>
+
+                                <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="fa-solid fa-graduation-cap text-indigo-400"></i> Ensino Superior
+                                    </span>
+                                    <span class="flex items-center gap-1.5">
+                                        <i class="fa-solid fa-laptop-code text-cyan-400"></i> Arquitetura Web
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE O PROFESSOR CELSO BARRETO -->
+        <section id="apresentacao" class="py-20 bg-slate-900/50 border-y border-slate-800/60 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-xs font-mono font-bold tracking-widest text-indigo-400 uppercase">Perfil Acadêmico &amp; Profissional</h2>
+                    <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Sobre o Prof. Celso Barreto</h3>
+                    <div class="w-16 h-1 bg-gradient-to-r from-indigo-500 to-cyan-500 mx-auto rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1: Formação e Docência -->
+                    <div class="glass-card rounded-2xl p-6 hover:border-indigo-500/40 transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl mb-5">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2">Docência &amp; Metodologia</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Com sólida atuação no ensino técnico e superior de Tecnologia da Informação, o Prof. Celso Barreto foca em metodologias ativas com aprendizagem baseada em projetos reais.
+                        </p>
+                        <ul class="text-xs text-slate-400 space-y-2 font-mono">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Aulas 100% orientadas à prática</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Resolução colaborativa de código</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 2: Experiência de Mercado -->
+                    <div class="glass-card rounded-2xl p-6 hover:border-cyan-500/40 transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl mb-5">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2">Engenharia Full Stack</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Ampla vivência em desenvolvimento de software corporativo, com domínio de arquiteturas orientadas a microsserviços, ecossistema Node.js, bancos relacionais e NoSQL.
+                        </p>
+                        <ul class="text-xs text-slate-400 space-y-2 font-mono">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> APIs RESTful e GraphQL</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> Modelagem e Clean Code</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 3: Inovação & IA -->
+                    <div class="glass-card rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300 hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl mb-5">
+                            <i class="fa-solid fa-brain"></i>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2">Inovação &amp; IA Aplicada</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Entusiasta do uso responsável de Inteligência Artificial no auxílio à escrita de código, otimização de algoritmos e preparação de alunos para os novos desafios da indústria.
+                        </p>
+                        <ul class="text-xs text-slate-400 space-y-2 font-mono">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Prompt Engineering para Devs</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-purple-400"></i> Ferramentas de Produtividade</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EMENTA COMPLETA DA DISCIPLINA DA WEB DINÂMICA -->
+        <section id="ementa" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-xs font-mono font-bold tracking-widest text-cyan-400 uppercase">Programa de Ensino</h2>
+                    <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Ementa de Desenvolvimento Dinâmico</h3>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        Conteúdo programático construído para transformar lógica e conceitos web em aplicações interativas do mundo real.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Módulo 1 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-indigo-500 hover:shadow-xl hover:shadow-indigo-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 01</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 12h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-indigo-300 transition-colors">
+                            JavaScript ES6+ &amp; Lógica Avançada
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Revisão profunda dos pilares modernos da linguagem: variáveis de escopo (`let`/`const`), Arrow Functions, Destructuring e Módulos.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Arrow Functions</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Spread/Rest</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Array Methods</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 2 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-cyan-500 hover:shadow-xl hover:shadow-cyan-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 02</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 16h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-cyan-300 transition-colors">
+                            Manipulação de DOM &amp; Eventos
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Tornando páginas estáticas dinâmicas: seleção de elementos, escutadores de eventos, delegação, criação dinâmica e animações via JS.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">querySelector</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">EventListener</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Event Bubbling</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 3 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-purple-500 hover:shadow-xl hover:shadow-purple-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 03</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 20h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-purple-300 transition-colors">
+                            Programação Assíncrona &amp; Fetch API
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Comunicação com servidores externos: entenda o Event Loop, Promises, sintaxe `async/await` e tratamento de erros com `try/catch`.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Promises</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Async/Await</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Fetch API</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 4 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-emerald-500 hover:shadow-xl hover:shadow-emerald-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 04</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 16h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-emerald-300 transition-colors">
+                            Arquitetura Client-Server &amp; REST
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Protocolo HTTP, verbos (GET, POST, PUT, DELETE), cabeçalhos, formulários interativos, validação de payload e integração com APIs.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Verbos HTTP</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">JSON Payload</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">CORS &amp; Headers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 5 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-amber-500 hover:shadow-xl hover:shadow-amber-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 05</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 12h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-amber-300 transition-colors">
+                            Armazenamento Local &amp; Estado
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Persistência de dados no navegador com `localStorage`, `sessionStorage`, manipulação de Cookies e padrões de estado dinâmico.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">LocalStorage</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">JSON.stringify</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">State Sync</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Módulo 6 -->
+                    <div class="glass-card rounded-2xl p-6 border-l-4 border-l-pink-500 hover:shadow-xl hover:shadow-pink-500/10 transition-all group">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-pink-400 bg-pink-500/10 px-2.5 py-1 rounded-md font-semibold">Mód. 06</span>
+                            <span class="text-xs text-slate-400"><i class="fa-regular fa-clock mr-1"></i> 20h</span>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl text-white mb-2 group-hover:text-pink-300 transition-colors">
+                            Ecossistema &amp; Frameworks Modernos
+                        </h4>
+                        <p class="text-slate-300 text-sm mb-4">
+                            Transição para o mercado: Introdução ao React.js, Bundlers (Vite), estilização utilitária com Tailwind e introdução ao Node.js.
+                        </p>
+                        <div class="border-t border-slate-800 pt-3 space-y-2">
+                            <p class="text-xs text-slate-400 font-semibold">Tópicos Chave:</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">React Basics</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Vite Build</span>
+                                <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Tailwind CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PLAYGROUND INTERATIVO / SIMULADOR EM TEMPO REAL -->
+        <section id="playground" class="py-20 bg-slate-900/80 border-t border-slate-800 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                    <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono">
+                        <i class="fa-solid fa-flask mr-1"></i> Laboratório de Código Ao Vivo
+                    </span>
+                    <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Playground Interativo de JS</h3>
+                    <p class="text-slate-300 text-sm sm:text-base">
+                        Experimente os conceitos da disciplina em tempo real diretamente neste simulador interativo.
+                    </p>
+                </div>
+
+                <!-- Playground Container -->
+                <div class="glass-panel rounded-3xl border border-slate-700/70 overflow-hidden shadow-2xl">
+                    
+                    <!-- Playground Header Tabs -->
+                    <div class="bg-slate-950/90 border-b border-slate-800 p-4 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+                            <button id="tab-dom-btn" onclick="switchTab('dom')" class="tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-mono font-medium transition-all bg-indigo-600 text-white flex items-center gap-2">
+                                <i class="fa-solid fa-square-poll-vertical"></i> 1. Manipulador DOM
+                            </button>
+                            <button id="tab-api-btn" onclick="switchTab('api')" class="tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-mono font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-cloud-arrow-down"></i> 2. Simulador Fetch API
+                            </button>
+                            <button id="tab-state-btn" onclick="switchTab('state')" class="tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-mono font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check"></i> 3. Estado Reativo (Tasks)
+                            </button>
+                        </div>
+                        <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 font-mono">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Engine: V8 / Browser Runtime
+                        </div>
+                    </div>
+
+                    <!-- TAB 1: DOM MANIPULATION LAB -->
+                    <div id="tab-dom" class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Controls Left -->
+                        <div class="lg:col-span-5 space-y-4">
+                            <h4 class="font-heading font-bold text-lg text-white">Controles do DOM</h4>
+                            <p class="text-xs text-slate-400">Altere as propriedades abaixo para ver a atualização dinâmica de nós no DOM em tempo real.</p>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1">Título do Cartão (innerText):</label>
+                                    <input type="text" id="dom-input-title" value="Desenvolvimento Dinâmico Web" oninput="updateDOMPreview()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1">Cor do Accent (style.color / border):</label>
+                                    <div class="flex gap-2">
+                                        <button onclick="setDOMAccent('#6366f1')" class="w-8 h-8 rounded-full bg-indigo-500 ring-2 ring-offset-2 ring-offset-slate-900 focus:outline-none"></button>
+                                        <button onclick="setDOMAccent('#06b6d4')" class="w-8 h-8 rounded-full bg-cyan-400 focus:outline-none"></button>
+                                        <button onclick="setDOMAccent('#10b981')" class="w-8 h-8 rounded-full bg-emerald-400 focus:outline-none"></button>
+                                        <button onclick="setDOMAccent('#f59e0b')" class="w-8 h-8 rounded-full bg-amber-400 focus:outline-none"></button>
+                                        <button onclick="setDOMAccent('#ec4899')" class="w-8 h-8 rounded-full bg-pink-500 focus:outline-none"></button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1">Adicionar Tags Dinamicamente:</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="dom-input-tag" placeholder="Ex: ES6, Async, DOM" class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                        <button onclick="addDOMTag()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-all">
+                                            + Add
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2">
+                                    <button onclick="resetDOMPreview()" class="text-xs text-slate-400 hover:text-white underline">Resetar Estado do Componente</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview Right -->
+                        <div class="lg:col-span-7 flex flex-col justify-between bg-slate-950/70 rounded-2xl p-6 border border-slate-800 min-h-[300px]">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                                    <span class="text-xs font-mono text-slate-400">Live Preview Container (#preview-target)</span>
+                                    <span class="text-[10px] font-mono bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">DOM Active</span>
+                                </div>
+
+                                <div id="dom-target-card" class="glass-card p-6 rounded-2xl border-2 border-indigo-500 transition-all">
+                                    <h5 id="dom-preview-title" class="font-heading font-bold text-2xl text-indigo-400 mb-2">
+                                        Desenvolvimento Dinâmico Web
+                                    </h5>
+                                    <p class="text-slate-300 text-sm mb-4">
+                                        Este card está sendo manipulado em tempo real por scripts nativos conectando formulários de input às propriedades de objetos DOM.
+                                    </p>
+                                    <div id="dom-tags-container" class="flex flex-wrap gap-2">
+                                        <span class="tag-pill text-xs px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">JavaScript</span>
+                                        <span class="tag-pill text-xs px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">HTML5</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-800/80 font-mono text-[11px] text-slate-400 flex items-center justify-between">
+                                <span>Código executado: <span class="text-cyan-400">element.innerText</span> &amp; <span class="text-cyan-400">appendChild()</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: FETCH API SIMULATOR -->
+                    <div id="tab-api" class="hidden p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-5 space-y-4">
+                            <h4 class="font-heading font-bold text-lg text-white">Simulador de Requisição Async</h4>
+                            <p class="text-xs text-slate-400">Simule chamadas assíncronas de rede e analise o comportamento de Promises e retornos JSON.</p>
+
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1">Selecione o Endpoint:</label>
+                                    <select id="api-endpoint-select" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                        <option value="alunos">GET /api/v1/alunos/destaques</option>
+                                        <option value="modulos">GET /api/v1/disciplina/modulos</option>
+                                        <option value="erro">GET /api/v1/servidor/status-500 (Simular Erro)</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-mono text-slate-300 mb-1">Latência de Rede Simulada:</label>
+                                    <select id="api-delay-select" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                        <option value="500">500ms (Rápida)</option>
+                                        <option value="1500" selected>1.5s (Padrão)</option>
+                                        <option value="3000">3.0s (Conexão Lenta)</option>
+                                    </select>
+                                </div>
+
+                                <button id="btn-fetch-api" onclick="executeSimulatedFetch()" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-play text-xs"></i>
+                                    <span>fetch(endpoint)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Response Console Output -->
+                        <div class="lg:col-span-7 bg-slate-950 rounded-2xl p-5 border border-slate-800 flex flex-col justify-between font-mono">
+                            <div>
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 text-xs">
+                                    <span class="text-slate-400">Response Console</span>
+                                    <span id="api-status-badge" class="px-2 py-0.5 rounded text-[11px] bg-slate-800 text-slate-400">Aguardando chamada...</span>
+                                </div>
+
+                                <!-- Loader bar -->
+                                <div id="api-loader" class="hidden mb-3">
+                                    <div class="flex items-center gap-2 text-xs text-cyan-400 mb-1">
+                                        <i class="fa-solid fa-spinner animate-spin"></i>
+                                        <span>Aguardando resposta do servidor...</span>
+                                    </div>
+                                    <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                                        <div class="h-full bg-cyan-400 animate-pulse w-full"></div>
+                                    </div>
+                                </div>
+
+                                <pre id="api-json-output" class="text-xs text-emerald-400 overflow-x-auto p-3 bg-slate-900/90 rounded-lg border border-slate-800 max-h-[220px]">
+// Clique em "fetch(endpoint)" para disparar a Promise.
+                                </pre>
+                            </div>
+
+                            <div class="pt-2 text-[11px] text-slate-500 flex justify-between">
+                                <span>Content-Type: application/json</span>
+                                <span>Protocol: HTTP/2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: REACTIVE TASK STATE -->
+                    <div id="tab-state" class="hidden p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-5 space-y-4">
+                            <h4 class="font-heading font-bold text-lg text-white">Gerenciamento de Estado</h4>
+                            <p class="text-xs text-slate-400">Adicione e remova itens da lista para observar a reatividade de dados e sincronização de array em JS.</p>
+
+                            <div class="space-y-3">
+                                <div class="flex gap-2">
+                                    <input type="text" id="task-input" placeholder="Nova atividade (ex: Estudar Promises)..." class="flex-grow bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500">
+                                    <button onclick="addStateTask()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-all">
+                                        + Add
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between text-xs text-slate-400">
+                                    <span>Total de Itens: <strong id="task-count" class="text-emerald-400 font-mono">2</strong></span>
+                                    <button onclick="clearStateTasks()" class="text-red-400 hover:underline text-[11px]">Limpar Tudo</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Task Items List Preview -->
+                        <div class="lg:col-span-7 bg-slate-950/70 rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <h5 class="text-xs font-mono text-slate-400 mb-3 border-b border-slate-800 pb-2">Lista Reativa de Exercícios</h5>
+                                <ul id="task-list-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                                    <!-- Dynamic Items -->
+                                </ul>
+                            </div>
+                            <div class="pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                                Array State: <span id="raw-state-preview" class="text-amber-300">["Revisar ES6", "Fazer Desafio DOM"]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- RECURSOS DIDÁTICOS E EXERCÍCIOS PRÁTICOS -->
+        <section id="exercicios" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    <!-- Desafios Práticos (Left 7 Cols) -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <div>
+                            <span class="text-xs font-mono text-indigo-400 font-bold uppercase tracking-wider">Mão na Massa</span>
+                            <h3 class="font-heading text-3xl font-extrabold text-white mt-1">Desafios Práticos da Semana</h3>
+                            <p class="text-slate-400 text-sm mt-1">Exercícios recomendados pelo Prof. Celso para consolidar seu aprendizado.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            
+                            <!-- Desafio 1 -->
+                            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded">Desafio #01</span>
+                                    <span class="text-xs text-emerald-400 font-medium"><i class="fa-solid fa-signal mr-1"></i> Iniciante</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-lg text-white">Consumo da API ViaCEP com Async/Await</h4>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Crie um formulário HTML onde o usuário digita o CEP e, ao sair do campo (`blur`), os campos de Rua, Bairro e Cidade são preenchidos automaticamente.
+                                </p>
+                                <button onclick="toggleSolution('sol-1')" class="text-xs font-mono text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 focus:outline-none">
+                                    <i class="fa-solid fa-code"></i> <span id="btn-text-sol-1">Ver dica de código</span>
+                                </button>
+                                <div id="sol-1" class="hidden mt-3 p-3 bg-slate-950 rounded-xl font-mono text-xs text-slate-300 border border-slate-800">
+                                    <p class="text-purple-400">async function <span class="text-indigo-300">buscarCEP</span>(cep) {</p>
+                                    <p class="pl-4 text-slate-400">// Tratar sanitização</p>
+                                    <p class="pl-4">const res = <span class="text-purple-400">await</span> fetch(`https://viacep.com.br/ws/${cep}/json/`);</p>
+                                    <p class="pl-4">const data = <span class="text-purple-400">await</span> res.json();</p>
+                                    <p class="pl-4">document.getElementById('rua').value = data.logradouro;</p>
+                                    <p class="text-purple-400">}</p>
+                                </div>
+                            </div>
+
+                            <!-- Desafio 2 -->
+                            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-mono font-bold text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded">Desafio #02</span>
+                                    <span class="text-xs text-amber-400 font-medium"><i class="fa-solid fa-signal mr-1"></i> Intermediário</span>
+                                </div>
+                                <h4 class="font-heading font-bold text-lg text-white">Filtro de Produtos em Tempo Real</h4>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    Implemente um campo de busca que escuta o evento `input` e filtra dinamicamente uma lista de elementos HTML sem recarregar a página.
+                                </p>
+                                <button onclick="toggleSolution('sol-2')" class="text-xs font-mono text-indigo-400 hover:text-indigo-300 flex items-center gap-1.5 focus:outline-none">
+                                    <i class="fa-solid fa-code"></i> <span id="btn-text-sol-2">Ver dica de código</span>
+                                </button>
+                                <div id="sol-2" class="hidden mt-3 p-3 bg-slate-950 rounded-xl font-mono text-xs text-slate-300 border border-slate-800">
+                                    <p class="text-indigo-300">inputSearch</p><p class="pl-4">.addEventListener('input', (e) =&gt; {</p>
+                                    <p class="pl-8">const termo = e.target.value.toLowerCase();</p>
+                                    <p class="pl-8">items.forEach(item =&gt; {</p>
+                                    <p class="pl-12">const match = item.textContent.toLowerCase().includes(termo);</p>
+                                    <p class="pl-12">item.style.display = match ? 'block' : 'none';</p>
+                                    <p class="pl-8">});</p>
+                                    <p class="pl-4">});</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Material Didático & Downloads (Right 5 Cols) -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div>
+                            <span class="text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider">Download &amp; Estudo</span>
+                            <h3 class="font-heading text-3xl font-extrabold text-white mt-1">Recursos Recomendados</h3>
+                            <p class="text-slate-400 text-sm mt-1">Acesse apostilas, slides de aula e materiais complementares.</p>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl p-6 border border-slate-700/60 space-y-4">
+                            
+                            <!-- Resource Item 1 -->
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-semibold text-white">Guia Rápido ES6+ &amp; DOM</h5>
+                                        <span class="text-[11px] text-slate-400">PDF • 2.4 MB</span>
+                                    </div>
+                                </div>
+                                <button onclick="triggerSimulatedDownload('Guia_ES6_Prof_Celso.pdf')" class="p-2 text-indigo-400 hover:text-indigo-300 hover:bg-slate-800 rounded-lg transition-all" title="Baixar">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                            </div>
+
+                            <!-- Resource Item 2 -->
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-file-code"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-semibold text-white">Cheatsheet Async/Await</h5>
+                                        <span class="text-[11px] text-slate-400">Markdown • 850 KB</span>
+                                    </div>
+                                </div>
+                                <button onclick="triggerSimulatedDownload('Cheatsheet_Async_Await.md')" class="p-2 text-indigo-400 hover:text-indigo-300 hover:bg-slate-800 rounded-lg transition-all" title="Baixar">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                            </div>
+
+                            <!-- Resource Item 3 -->
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+                                        <i class="fa-brands fa-github"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-sm font-semibold text-white">Repositório de Exemplos</h5>
+                                        <span class="text-[11px] text-slate-400">GitHub Repo</span>
+                                    </div>
+                                </div>
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="p-2 text-emerald-400 hover:text-emerald-300 hover:bg-slate-800 rounded-lg transition-all" title="Abrir Link">
+                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FORMULÁRIO DE CONTATO E DÚVIDAS DA DISCIPLINA -->
+        <section id="contato" class="py-20 bg-slate-900/60 border-t border-slate-800 relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center mb-12 space-y-3">
+                    <span class="text-xs font-mono text-indigo-400 font-bold uppercase tracking-wider">Atendimento ao Aluno</span>
+                    <h3 class="font-heading text-3xl sm:text-4xl font-extrabold text-white">Envie sua Dúvida ou Mensagem</h3>
+                    <p class="text-slate-400 text-sm">
+                        Precisa de auxílio com os trabalhos ou dúvidas sobre o conteúdo da disciplina? Entre em contato diretamente com o Prof. Celso Barreto.
+                    </p>
+                </div>
+
+                <div class="glass-panel rounded-3xl p-6 sm:p-10 border border-slate-700/70 shadow-2xl">
+                    <form id="contact-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            
+                            <div>
+                                <label for="nome" class="block text-xs font-mono text-slate-300 mb-2">Nome Completo *</label>
+                                <input type="text" id="nome" required placeholder="Ex: Maria Silva" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+                            </div>
+
+                            <div>
+                                <label for="email" class="block text-xs font-mono text-slate-300 mb-2">E-mail Institucional ou Pessoal *</label>
+                                <input type="email" id="email" required placeholder="aluno@instituicao.edu.br" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+                            </div>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            
+                            <div>
+                                <label for="turma" class="block text-xs font-mono text-slate-300 mb-2">Turma / Período</label>
+                                <select id="turma" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                                    <option value="noturno">Desenvolvimento Dinâmico - Noturno</option>
+                                    <option value="matutino">Desenvolvimento Dinâmico - Matutino</option>
+                                    <option value="outro">Outro / Visitante Externa</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="assunto" class="block text-xs font-mono text-slate-300 mb-2">Assunto Principal</label>
+                                <input type="text" id="assunto" placeholder="Ex: Dúvida no Módulo 3 de Fetch API" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors">
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <label for="mensagem" class="block text-xs font-mono text-slate-300 mb-2">Sua Mensagem / Dúvida *</label>
+                            <textarea id="mensagem" rows="5" required placeholder="Descreva sua dúvida de código ou solicitação..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-semibold rounded-xl text-base shadow-xl shadow-indigo-600/30 hover:shadow-indigo-500/40 transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Enviar Mensagem ao Professor</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-xs py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center font-mono font-bold text-white text-sm">
+                        &lt;/&gt;
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-base text-white block">Prof. Celso Barreto</span>
+                        <span class="text-[11px] text-slate-400">Disciplina de Desenvolvimento Dinâmico Web</span>
+                    </div>
+                </div>
+
+                <!-- Social & Academic Links -->
+                <div class="flex items-center gap-4 text-base">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-white hover:border-slate-700 transition-all" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-indigo-400 hover:border-slate-700 transition-all" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="http://lattes.cnpq.br" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center hover:text-cyan-400 hover:border-slate-700 transition-all" title="Currículo Lattes">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="border-t border-slate-900 pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-4">
+                <p>&copy; <span id="year">2026</span> Prof. Celso Barreto. Conteúdo acadêmico sob licença de uso educacional.</p>
+                <p class="font-mono">Desenvolvido com HTML5, Tailwind CSS &amp; JavaScript ES6+</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // Set dynamic current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile drawer on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Custom Toast Notification System (Replaces alert)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-slate-900 border-emerald-500 text-emerald-300' : 'bg-slate-900 border-red-500 text-red-300';
+            const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-xmark text-red-400';
+            
+            toast.className = `pointer-events-auto p-4 rounded-xl border glass-panel shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-2 ${bgColor}`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-lg"></i>
+                <span class="text-xs font-medium text-slate-200">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-[-10px]');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // --- PLAYGROUND TAB SWITCHER ---
+        function switchTab(tabName) {
+            const tabs = ['dom', 'api', 'state'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                const content = document.getElementById(`tab-${t}`);
+                if (t === tabName) {
+                    btn.className = 'tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-mono font-medium transition-all bg-indigo-600 text-white flex items-center gap-2';
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = 'tab-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-mono font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800 flex items-center gap-2';
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- TAB 1: DOM LAB INTERACTION ---
+        function updateDOMPreview() {
+            const inputVal = document.getElementById('dom-input-title').value;
+            const titleTarget = document.getElementById('dom-preview-title');
+            titleTarget.innerText = inputVal.trim() !== '' ? inputVal : 'Título em Branco';
+        }
+
+        function setDOMAccent(colorHex) {
+            const titleTarget = document.getElementById('dom-preview-title');
+            const cardTarget = document.getElementById('dom-target-card');
+            
+            titleTarget.style.color = colorHex;
+            cardTarget.style.borderColor = colorHex;
+
+            // Update tag pills accent
+            const pills = document.querySelectorAll('.tag-pill');
+            pills.forEach(pill => {
+                pill.style.borderColor = colorHex;
+                pill.style.color = colorHex;
+            });
+        }
+
+        function addDOMTag() {
+            const input = document.getElementById('dom-input-tag');
+            const tagText = input.value.trim();
+            if (!tagText) return;
+
+            const tagsContainer = document.getElementById('dom-tags-container');
+            const newSpan = document.createElement('span');
+            newSpan.className = 'tag-pill text-xs px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 animate-fadeIn';
+            newSpan.innerText = tagText;
+
+            tagsContainer.appendChild(newSpan);
+            input.value = '';
+            showToast(`Elemento tag "${tagText}" injetado no DOM!`);
+        }
+
+        function resetDOMPreview() {
+            document.getElementById('dom-input-title').value = 'Desenvolvimento Dinâmico Web';
+            document.getElementById('dom-preview-title').innerText = 'Desenvolvimento Dinâmico Web';
+            document.getElementById('dom-preview-title').style.color = '#818cf8';
+            document.getElementById('dom-target-card').style.borderColor = '#6366f1';
+            
+            const tagsContainer = document.getElementById('dom-tags-container');
+            tagsContainer.innerHTML = `
+                <span class="tag-pill text-xs px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">JavaScript</span>
+                <span class="tag-pill text-xs px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">HTML5</span>
+            `;
+            showToast('Preview resetado para o padrão.');
+        }
+
+        // --- TAB 2: FETCH API SIMULATOR ---
+        function executeSimulatedFetch() {
+            const endpoint = document.getElementById('api-endpoint-select').value;
+            const delay = parseInt(document.getElementById('api-delay-select').value);
+            
+            const loader = document.getElementById('api-loader');
+            const output = document.getElementById('api-json-output');
+            const badge = document.getElementById('api-status-badge');
+
+            // UI Loading state
+            loader.classList.remove('hidden');
+            output.textContent = '// Aguardando resposta do servidor (Promise Status: Pending)...';
+            badge.className = 'px-2 py-0.5 rounded text-[11px] bg-amber-500/20 text-amber-300 border border-amber-500/30';
+            badge.textContent = 'HTTP 102 Processing';
+
+            // Simulate Network Promise Delay
+            setTimeout(() => {
+                loader.classList.add('hidden');
+
+                if (endpoint === 'alunos') {
+                    badge.className = 'px-2 py-0.5 rounded text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                    badge.textContent = '200 OK (Resolved)';
+                    output.textContent = JSON.stringify({
+                        status: 200,
+                        disciplina: "Desenvolvimento Dinâmico",
+                        professor: "Prof. Celso Barreto",
+                        alunos_destaque: [
+                            { id: 1, nome: "Lucas Mendes", nota: 9.8, projeto: "SPA Reativa" },
+                            { id: 2, nome: "Ana Beatriz", nota: 10.0, projeto: "Dashboard API" }
+                        ],
+                        timestamp: new Date().toISOString()
+                    }, null, 2);
+                } else if (endpoint === 'modulos') {
+                    badge.className = 'px-2 py-0.5 rounded text-[11px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                    badge.textContent = '200 OK (Resolved)';
+                    output.textContent = JSON.stringify({
+                        status: 200,
+                        total_modulos: 6,
+                        modulos: ["ES6+", "DOM & Events", "Fetch API", "REST Architecture", "State", "Frameworks"],
+                        carga_horaria_total: "96 horas"
+                    }, null, 2);
+                } else {
+                    badge.className = 'px-2 py-0.5 rounded text-[11px] bg-red-500/20 text-red-300 border border-red-500/30';
+                    badge.textContent = '500 Internal Error (Rejected)';
+                    output.textContent = JSON.stringify({
+                        error: true,
+                        code: "ERR_SIMULATED_SERVER_FAILURE",
+                        message: "Falha na conexão com o banco de dados simulado.",
+                        dica_prof_celso: "Utilize blocos try/catch para capturar exceções assíncronas!"
+                    }, null, 2);
+                }
+            }, delay);
+        }
+
+        // --- TAB 3: REACTIVE STATE LAB ---
+        let tasksState = [
+            "Revisar sintaxe de Arrow Functions",
+            "Implementar Fetch API com tratamento de erros"
+        ];
+
+        function renderTasksState() {
+            const container = document.getElementById('task-list-container');
+            const count = document.getElementById('task-count');
+            const rawPreview = document.getElementById('raw-state-preview');
+
+            container.innerHTML = '';
+            
+            if (tasksState.length === 0) {
+                container.innerHTML = `<li class="text-xs text-slate-500 italic">Nenhum exercício na lista.</li>`;
+            } else {
+                tasksState.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center justify-between p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200';
+                    li.innerHTML = `
+                        <span>${index + 1}. ${task}</span>
+                        <button onclick="removeStateTask(${index})" class="text-slate-500 hover:text-red-400 text-xs p-1" title="Excluir">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    `;
+                    container.appendChild(li);
+                });
+            }
+
+            count.textContent = tasksState.length;
+            rawPreview.textContent = JSON.stringify(tasksState);
+        }
+
+        function addStateTask() {
+            const input = document.getElementById('task-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            tasksState.push(val);
+            input.value = '';
+            renderTasksState();
+            showToast('Item adicionado ao estado!');
+        }
+
+        function removeStateTask(index) {
+            tasksState.splice(index, 1);
+            renderTasksState();
+            showToast('Item removido do estado.');
+        }
+
+        function clearStateTasks() {
+            tasksState = [];
+            renderTasksState();
+            showToast('Estado limpo!');
+        }
+
+        // Initial state render
+        renderTasksState();
+
+        // Solution Accordion Toggle
+        function toggleSolution(id) {
+            const sol = document.getElementById(id);
+            const btnText = document.getElementById(`btn-text-${id}`);
+            
+            if (sol.classList.contains('hidden')) {
+                sol.classList.remove('hidden');
+                btnText.textContent = 'Ocultar dica de código';
+            } else {
+                sol.classList.add('hidden');
+                btnText.textContent = 'Ver dica de código';
+            }
+        }
+
+        // Simulated Download Handler
+        function triggerSimulatedDownload(filename) {
+            showToast(`Iniciando download simulado de: ${filename}`);
+        }
+
+        // Form Submission Handler
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            showToast(`Obrigado, ${nome}! Sua dúvida foi enviada com sucesso ao Prof. Celso Barreto.`, 'success');
+            document.getElementById('contact-form').reset();
+        }
+    </script>
+</body>
+</html>
