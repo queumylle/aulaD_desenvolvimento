@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="icon" href="img/logo-icon.ico" type="image/x-icon">
+    <title>Ateliê Souza</title>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo-link">
+                <img src="img/logo-icon.ico" alt="Imagem do Ateliê Souza" width="100" height="100">
+                <h1>Ateliê Souza</h1>
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#produtos">Produtos</a></li>
+                    <li><a href="#info">Informações</a></li>
+                    <li><a href="#feedback">Feedback</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                    <li>
+                        <button id="dark-mode-toggle" aria-label="Alternar modo escuro">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="sobre" class="about-section">
+            <h2>Ateliê</h2>
+            <div class="text-content">
+                <p>O Ateliê Souza é mais do que uma simples confeitaria, somos um refúgio de sabores, um espaço onde a arte da culinária se encontra com a paixão por criar momentos inesquecíveis. Nossa história começou na cozinha de casa, com receitas de família passadas de geração em geração, aprimoradas com carinho e dedicação, transformando cada bolo, doce e salgado em uma pequena obra prima.</p>
+                <p>Nossa confeitaria é o resultado de um amor profundo pela gastronomia e um compromisso com a satisfação de cada cliente. Convidamos você a fazer parte da nossa história, a experimentar a magia dos nossos sabores e a transformar seus eventos em celebrações memoráveis. Seja para um <strong>aniversário</strong>, uma <strong>reunião familiar</strong> ou simplesmente para <strong>adoçar o dia</strong>, estamos aqui para criar experiências gustativas que ficarão gravadas na memória.</p>
+                <p class="paladar">Venha nos conhecer e deixe o Ateliê Souza encantar seu paladar!</p>
+            </div>
+        </section>
+
+        <section id="produtos" class="produto-categories">
+            <h2>Nossos Produtos</h2>
+            <div class="categoria-grid">
+                <a href="bolos.html" class="categoria-card">
+                    <img src="img/BOLO15CM.jpg" alt="Bolo decorado">
+                    <h3>Bolos</h3>
+                </a>
+                <a href="doces.html" class="categoria-card">
+                    <img src="img/bridageiros&beijinhos.jpg" alt="Doces">
+                    <h3>Doces</h3>
+                </a>
+                <a href="salgados.html" class="categoria-card">
+                    <img src="img/camaraoempanado.jpg" alt="Camarão empanado">
+                    <h3>Salgados</h3>
+                </a>
+                <a href="kits.html" class="categoria-card">
+                    <img src="img/kits.jpg" alt="Salgados variados">
+                    <h3>Kits</h3>
+                </a>
+            </div>
+        </section>
+
+        <section id="info" class="info-section">
+            <h2>+Infos</h2>
+
+            <button class="accordion">Prazo para Pedidos</button>
+            <div class="panel">
+                <ul>
+                    <li>
+                        <p>Aceitamos encomendas com, no mínimo, 3 dias de antecedência, para garantir a qualidade e o atendimento adequado.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="accordion">Horário de Funcionamento</button>
+            <div class="panel">
+                <ul>
+                    <li>
+                        <p>Nosso horário de funcionamento é das 10h às 18h, de segunda a sexta-feira, e aos sábados, domingos e feriados, até as 12h.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="accordion">Condições de Pagamento</button>
+            <div class="panel">
+                <ul>
+                    <li>
+                        <p>Para confirmar sua encomenda, é necessário realizar o pagamento de 50% do valor no ato do pedido. Os outros 50% deverão ser pagos na entrega do pedido.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <button class="accordion">Alterações e Cancelamentos</button>
+            <div class="panel">
+                <ul>
+                    <li>
+                        Alterações podem ser feitas até 24 horas após a confirmação do pedido, desde que a produção não tenha iniciado.
+                    </li>
+                    <li>
+                        Cancelamentos devem ser solicitados com, no mínimo, 48 horas de antecedência. Caso o pedido seja cancelado após esse prazo ou esteja em produção, não haverá reembolso do valor já pago.
+                    </li>
+                </ul>
+            </div>
+
+            <button class="accordion">Formas de Pagamento</button>
+            <div class="panel">
+                <ul>
+                    <li>Aceitamos cartão de crédito, débito, PIX e dinheiro.</li>
+                </ul>
+            </div>
+
+            <button class="accordion">Endereço para Retirada</button>
+            <div class="panel">
+                <ul>
+                    <li>
+                        Rua General Mascarenhas de Moraes, Pau Miúdo, Salvador - BA, CEP 40310015.
+                    </li>
+                    <li>
+                        Não realizamos entregas no momento. A retirada dos pedidos é feita no local ou com entrega a combinar.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+<section id="feedback" class="feedback-section">
+    <h2>Feedback</h2>
+    <div class="text-feedback">
+        <p>Espaço para feedback dos clientes.</p>
+        <div>
+            <form action="https://api.sheetmonkey.io/form/qmgYPZkb93NDnmJBgz2QYL" method="post">
+                <label>Nome:</label>
+                <input type="text" name="Name" required>
+
+                <label>Email:</label>
+                <input type="email" name="Email" required>
+
+                <label>Telefone:</label>
+                <input type="text" name="Telefone" required>
+
+                <div class="satisfacao">
+                    <p>Grau de satisfação:</p>
+                    <input type="radio" id="msatisfeito" name="Satisfacao" value="Muito satisfeito">
+                    <label for="msatisfeito">Muito satisfeito</label>
+
+                    <input type="radio" id="satisfeito" name="Satisfacao" value="Satisfeito">
+                    <label for="satisfeito">Satisfeito</label>
+
+                    <input type="radio" id="insatisfeito" name="Satisfacao" value="Insatisfeito">
+                    <label for="insatisfeito">Insatisfeito</label> <br>
+
+                    <p>Mensagem:</p>
+                <textarea placeholder="(Opcional)" name="Mensagem" rows="5" cols="40"></textarea>
+                <input type="hidden" name="Created" value="x-sheetmonkey-current-date-time" />
+                <button type="submit">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <footer id="contato">
+        <div class="footer-content">
+            <img src="img/logo-icon.ico" alt="Logo do Ateliê Souza" width="85" height="80">
+            <div class="social-links">
+                <a href="https://wa.me/71988212474" target="_blank">
+                    <img src="img/whatsapp.png" alt="WhatsApp">
+                </a>
+                <a href="https://www.instagram.com/lusouza_cake/" target="_blank">
+                    <img src="img/instagram.png" alt="Instagram">
+                </a>
+                <a href="mailto:lucidasilvanascimento608@gmail.com" target="_blank">
+                    <img src="/img/gmail.png" alt="Email">
+            </div>
+            <p>&copy; 2025 by Ateliê Souza. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
